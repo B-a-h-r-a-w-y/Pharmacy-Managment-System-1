@@ -2,7 +2,7 @@ public class Admin extends User {
     public Admin(String userId, String name) {
         super(userId, name, "Admin");
     }
-    
+    // Testing Bending Feature
     // Medicine management
     public void addMedicine(Medicine medicine) {
         System.out.println("Added medicine: " + medicine.getName());
