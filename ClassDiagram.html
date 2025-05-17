@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyPharma - Class Diagram Design</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 30px;
+            color: #333;
+        }
+        h1 {
+            color: #0066cc;
+            text-align: center;
+            border-bottom: 2px solid #0066cc;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #0066cc;
+            margin-top: 30px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 5px;
+        }
+        h3 {
+            color: #0066cc;
+            margin-top: 20px;
+        }
+        .class-diagram {
+            font-family: monospace;
+            white-space: pre;
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            margin: 10px 0;
+        }
+        .relationships, .architecture, .features {
+            background-color: #f9f9f9;
+            padding: 10px 20px;
+            border-radius: 5px;
+            border-left: 3px solid #0066cc;
+            margin: 15px 0;
+        }
+        ol, ul {
+            margin-left: 20px;
+        }
+        .page-break {
+            page-break-before: always;
+        }
+    </style>
+</head>
+<body>
+    <h1>MyPharma - Class Diagram Design</h1>
+    
+    <h2>Models</h2>
+    
+    <h3>Medicine</h3>
+    <div class="class-diagram">
++------------------------+
+|       Medicine         |
++------------------------+
+| - name: String         |
+| - quantity: int        |
+| - price: double        |
+| - expiryDate: String   |
++------------------------+
+| + Medicine(...)        |
+| + getName(): String    |
+| + getQuantity(): int   |
+| + getPrice(): double   |
+| + getExpiryDate(): String |
+| + setQuantity(int)     |
+| + toString(): String   |
++------------------------+
+    </div>
+    
+    <h3>Purchase</h3>
+    <div class="class-diagram">
++---------------------------+
+|         Purchase          |
++---------------------------+
+| - medicineName: String    |
+| - quantity: int           |
+| - price: double           |
+| - total: double           |
+| - purchaseTime: LocalDateTime |
+| - formatter: DateTimeFormatter |
++---------------------------+
+| + Purchase(...)           |
+| + getMedicineName(): String  |
+| + getQuantity(): int      |
+| + getPrice(): double      |
+| + getTotal(): double      |
+| + getPurchaseTime(): LocalDateTime |
+| + getFormattedTime(): String |
+| + toString(): String      |
+| + fromString(String): Purchase |
++---------------------------+
+    </div>
+    
+    <div class="page-break"></div>
+    <h2>GUI Components</h2>
+    
+    <h3>LoginScreen</h3>
+    <div class="class-diagram">
++------------------------+
+|      LoginScreen       |
++------------------------+
+| (JFrame)               |
++------------------------+
+| + LoginScreen()        |
++------------------------+
+    </div>
+    
+    <h3>AdminDashboard</h3>
+    <div class="class-diagram">
++------------------------+
+|    AdminDashboard      |
++------------------------+
+| (JFrame)               |
+| - medicineTable        |
+| - userTable            |
++------------------------+
+| + AdminDashboard()     |
+| - loadUsersTable()     |
++------------------------+
+    </div>
+    
+    <h3>PharmacistDashboard</h3>
+    <div class="class-diagram">
++------------------------+
+|  PharmacistDashboard   |
++------------------------+
+| (JFrame)               |
+| - medicineTable        |
+| - quantityField        |
+| - statusLabel          |
++------------------------+
+| + PharmacistDashboard()|
+| - loadMedicineTable()  |
+| - sellMedicine()       |
++------------------------+
+    </div>
+    
+    <h3>CustomerDashboard</h3>
+    <div class="class-diagram">
++------------------------+
+|   CustomerDashboard    |
++------------------------+
+| (JFrame)               |
++------------------------+
+| + CustomerDashboard()  |
++------------------------+
+    </div>
+    
+    <div class="page-break"></div>
+    <h2>Utility Classes</h2>
+    
+    <h3>UserManager</h3>
+    <div class="class-diagram">
++------------------------+
+|     UserManager        |
++------------------------+
+| - FILE: String         |
++------------------------+
+| + bootstrap()          |
+| + checkAdmin(String, String): boolean |
+| + updateAdminCreds(String, String)    |
+| + checkCredentials(String, String): String |
+| + createUser(String, String, String): boolean |
+| + getAllUsers(): String[][]    |
+| + deleteUser(int): boolean     |
+| + updateUser(...): boolean     |
+| - loadAll(): List<String>      |
+| - saveAll(List<String>)        |
+| - usernameExists(String): boolean |
++------------------------+
+    </div>
+    
+    <h3>MedicineManager</h3>
+    <div class="class-diagram">
++---------------------------+
+|     MedicineManager       |
++---------------------------+
+| - MEDICINE_FILE: String   |
++---------------------------+
+| + loadAll(): List<String[]> |
+| + addMedicine(String, int, double, LocalDate) |
+| + updateMedicine(int, String, int, double, LocalDate) |
+| + deleteMedicine(int)     |
+| + medicineExists(String): boolean |
++---------------------------+
+    </div>
+    
+    <h3>PurchaseManager</h3>
+    <div class="class-diagram">
++---------------------------+
+|     PurchaseManager       |
++---------------------------+
+| - PURCHASE_FILE: String   |
++---------------------------+
+| + recordPurchase(String, int, double): boolean |
+| - updateMedicineQuantity(String, int): boolean |
+| + loadAllPurchases(): List<Purchase> |
+| + getTotalRevenue(): double   |
+| + getPurchasesAsString(): String |
+| + resetPurchaseHistory(): boolean |
++---------------------------+
+    </div>
+    
+    <h3>FileManager</h3>
+    <div class="class-diagram">
++---------------------------+
+|       FileManager         |
++---------------------------+
+| - FILE_NAME: String       |
++---------------------------+
+| + loadMedicines(): List<Medicine> |
+| + saveMedicines(Medicine) |
+| + getMedicineListAsString(): String |
++---------------------------+
+    </div>
+    
+    <h3>Main Class</h3>
+    <div class="class-diagram">
++---------------------------+
+|           Main            |
++---------------------------+
+| + main(String[])          |
++---------------------------+
+    </div>
+    
+    <div class="page-break"></div>
+    <h2>Relationships</h2>
+    <div class="relationships">
+        <ol>
+            <li>Main creates an instance of LoginScreen</li>
+            <li>LoginScreen creates instances of AdminDashboard, PharmacistDashboard, or CustomerDashboard based on login credentials</li>
+            <li>UserManager manages user data and is used by all dashboard classes</li>
+            <li>MedicineManager manages medicine data and is used by AdminDashboard and PharmacistDashboard</li>
+            <li>PurchaseManager manages purchase data and is used by PharmacistDashboard and AdminDashboard</li>
+            <li>FileManager is used by PharmacistDashboard and CustomerDashboard to display medicine information</li>
+            <li>PurchaseManager uses Medicine model to update inventory</li>
+            <li>Purchase model is created and managed by PurchaseManager</li>
+        </ol>
+    </div>
+    
+    <h2>Architecture Pattern</h2>
+    <div class="architecture">
+        <p>This architecture follows the Model-View-Controller (MVC) pattern:</p>
+        <ul>
+            <li><strong>Models:</strong> Medicine, Purchase</li>
+            <li><strong>Views:</strong> LoginScreen, AdminDashboard, PharmacistDashboard, CustomerDashboard</li>
+            <li><strong>Controllers:</strong> UserManager, MedicineManager, PurchaseManager, FileManager</li>
+        </ul>
+        <p>The system features role-based access control with three user types (Admin, Pharmacist, Customer), inventory management, sales tracking, and reporting capabilities.</p>
+    </div>
+    
+    <h2>Features</h2>
+    <div class="features">
+        <ol>
+            <li><strong>User Management:</strong> Add, edit, delete users with different roles</li>
+            <li><strong>Inventory Management:</strong> Add, edit, delete medicines</li>
+            <li><strong>Sales Processing:</strong> Record sales, decrease inventory</li>
+            <li><strong>Purchase History:</strong> Track all purchases with date/time</li>
+            <li><strong>Sales Analytics:</strong> Total revenue calculation</li>
+            <li><strong>Security:</strong> Role-based access control</li>
+        </ol>
+    </div>
+</body>
+</html>

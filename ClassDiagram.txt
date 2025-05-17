@@ -1,0 +1,183 @@
+# MyPharma - Class Diagram Design
+
+## Models
+
+### Medicine
++------------------------+
+|       Medicine         |
++------------------------+
+| - name: String         |
+| - quantity: int        |
+| - price: double        |
+| - expiryDate: String   |
++------------------------+
+| + Medicine(...)        |
+| + getName(): String    |
+| + getQuantity(): int   |
+| + getPrice(): double   |
+| + getExpiryDate(): String |
+| + setQuantity(int)     |
+| + toString(): String   |
++------------------------+
+
+### Purchase
++---------------------------+
+|         Purchase          |
++---------------------------+
+| - medicineName: String    |
+| - quantity: int           |
+| - price: double           |
+| - total: double           |
+| - purchaseTime: LocalDateTime |
+| - formatter: DateTimeFormatter |
++---------------------------+
+| + Purchase(...)           |
+| + getMedicineName(): String  |
+| + getQuantity(): int      |
+| + getPrice(): double      |
+| + getTotal(): double      |
+| + getPurchaseTime(): LocalDateTime |
+| + getFormattedTime(): String |
+| + toString(): String      |
+| + fromString(String): Purchase |
++---------------------------+
+
+## GUI Components
+
+### LoginScreen
++------------------------+
+|      LoginScreen       |
++------------------------+
+| (JFrame)               |
++------------------------+
+| + LoginScreen()        |
++------------------------+
+
+### AdminDashboard
++------------------------+
+|    AdminDashboard      |
++------------------------+
+| (JFrame)               |
+| - medicineTable        |
+| - userTable            |
++------------------------+
+| + AdminDashboard()     |
+| - loadUsersTable()     |
++------------------------+
+
+### PharmacistDashboard
++------------------------+
+|  PharmacistDashboard   |
++------------------------+
+| (JFrame)               |
+| - medicineTable        |
+| - quantityField        |
+| - statusLabel          |
++------------------------+
+| + PharmacistDashboard()|
+| - loadMedicineTable()  |
+| - sellMedicine()       |
++------------------------+
+
+### CustomerDashboard
++------------------------+
+|   CustomerDashboard    |
++------------------------+
+| (JFrame)               |
++------------------------+
+| + CustomerDashboard()  |
++------------------------+
+
+## Utility Classes
+
+### UserManager
++------------------------+
+|     UserManager        |
++------------------------+
+| - FILE: String         |
++------------------------+
+| + bootstrap()          |
+| + checkAdmin(String, String): boolean |
+| + updateAdminCreds(String, String)    |
+| + checkCredentials(String, String): String |
+| + createUser(String, String, String): boolean |
+| + getAllUsers(): String[][]    |
+| + deleteUser(int): boolean     |
+| + updateUser(...): boolean     |
+| - loadAll(): List<String>      |
+| - saveAll(List<String>)        |
+| - usernameExists(String): boolean |
++------------------------+
+
+### MedicineManager
++---------------------------+
+|     MedicineManager       |
++---------------------------+
+| - MEDICINE_FILE: String   |
++---------------------------+
+| + loadAll(): List<String[]> |
+| + addMedicine(String, int, double, LocalDate) |
+| + updateMedicine(int, String, int, double, LocalDate) |
+| + deleteMedicine(int)     |
+| + medicineExists(String): boolean |
++---------------------------+
+
+### PurchaseManager
++---------------------------+
+|     PurchaseManager       |
++---------------------------+
+| - PURCHASE_FILE: String   |
++---------------------------+
+| + recordPurchase(String, int, double): boolean |
+| - updateMedicineQuantity(String, int): boolean |
+| + loadAllPurchases(): List<Purchase> |
+| + getTotalRevenue(): double   |
+| + getPurchasesAsString(): String |
+| + resetPurchaseHistory(): boolean |
++---------------------------+
+
+### FileManager
++---------------------------+
+|       FileManager         |
++---------------------------+
+| - FILE_NAME: String       |
++---------------------------+
+| + loadMedicines(): List<Medicine> |
+| + saveMedicines(Medicine) |
+| + getMedicineListAsString(): String |
++---------------------------+
+
+## Main Class
++---------------------------+
+|           Main            |
++---------------------------+
+| + main(String[])          |
++---------------------------+
+
+## Relationships
+
+1. Main creates an instance of LoginScreen
+2. LoginScreen creates instances of AdminDashboard, PharmacistDashboard, or CustomerDashboard based on login credentials
+3. UserManager manages user data and is used by all dashboard classes
+4. MedicineManager manages medicine data and is used by AdminDashboard and PharmacistDashboard
+5. PurchaseManager manages purchase data and is used by PharmacistDashboard and AdminDashboard
+6. FileManager is used by PharmacistDashboard and CustomerDashboard to display medicine information
+7. PurchaseManager uses Medicine model to update inventory
+8. Purchase model is created and managed by PurchaseManager
+
+## Architecture Pattern
+
+This architecture follows the Model-View-Controller (MVC) pattern:
+- Models: Medicine, Purchase
+- Views: LoginScreen, AdminDashboard, PharmacistDashboard, CustomerDashboard
+- Controllers: UserManager, MedicineManager, PurchaseManager, FileManager
+
+The system features role-based access control with three user types (Admin, Pharmacist, Customer), inventory management, sales tracking, and reporting capabilities.
+
+## Features
+1. User Management: Add, edit, delete users with different roles
+2. Inventory Management: Add, edit, delete medicines
+3. Sales Processing: Record sales, decrease inventory
+4. Purchase History: Track all purchases with date/time
+5. Sales Analytics: Total revenue calculation
+6. Security: Role-based access control
